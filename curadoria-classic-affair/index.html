@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Curadoria para Classic Affair</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=La+Belle+Aurore&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f3f0e8;--ink:#211e1a;--muted:#79746c;--line:#d7d1c5;--olive:#62634b;--rust:#9c553d;--white:#fbfaf7;--card:#e7e1d6}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:'DM Sans',Arial,sans-serif;line-height:1.5}
+a{color:inherit}
+.wrap{max-width:1040px;margin:0 auto;padding:0 24px 80px}
+header.cover{padding:48px 0 28px;border-bottom:1px solid var(--line)}
+.kicker{font:500 11px 'DM Sans',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--olive)}
+h1{font:400 clamp(40px,6vw,68px)/0.98 'Instrument Serif',Georgia,serif;letter-spacing:-.02em;margin:12px 0 0}
+nav.toc{display:flex;flex-wrap:wrap;gap:8px;padding:16px 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--paper);z-index:5}
+nav.toc a{font:500 11px 'DM Sans',sans-serif;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;padding:8px 12px;border:1px solid var(--line);border-radius:999px;color:var(--ink)}
+section{padding:44px 0 8px}
+h2{font:400 36px/1.05 'Instrument Serif',Georgia,serif;margin:8px 0 10px}
+.sub{color:#625d54;max-width:680px;margin:0 0 24px}
+.btn{display:inline-block;font:600 12px 'DM Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;background:var(--ink);color:var(--paper);padding:10px 15px;border-radius:999px;border:0;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+
+/* bios */
+.bios{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.bio-card{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:12px}
+.bio-card .tag{font:500 10px 'DM Sans',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--rust)}
+.bio-card pre{font:15px/1.5 'DM Sans',sans-serif;white-space:pre-wrap;margin:0;flex:1}
+.bio-card.selected{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink) inset}
+.btn-row{display:flex;gap:8px}
+.bio-card .btn{padding:8px 12px;font-size:11px}
+
+/* IG preview */
+.ig{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:28px;max-width:720px}
+.ig-head{display:flex;gap:28px;align-items:center}
+.avatar-wrap{position:relative;width:110px;height:110px;flex:none}
+.avatar{width:110px;height:110px;border-radius:50%;object-fit:cover;background:#292720;display:block;border:1px solid var(--line)}
+.upload-label{display:block;margin-top:10px;text-align:center;font:600 10px 'DM Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--olive);cursor:pointer}
+.upload-label input{display:none}
+.ig-meta{flex:1;min-width:0}
+.handle{font:600 18px 'DM Sans',sans-serif;border:0;background:transparent;width:100%;padding:0;color:var(--ink)}
+.handle:focus,.bio-edit:focus{outline:1px dashed var(--olive)}
+.stats{display:flex;gap:22px;margin:10px 0;font-size:14px}
+.stats b{font-weight:600}
+.bio-edit{font:14px/1.5 'DM Sans',sans-serif;width:100%;border:0;background:transparent;padding:0;resize:none;color:var(--ink);min-height:70px}
+.ig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:26px}
+.ig-grid img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block;background:var(--card)}
+.note{font-size:12px;color:var(--muted);margin-top:12px}
+
+/* links */
+.links{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.link-card{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:22px;text-decoration:none}
+.link-card b{font:400 26px 'Instrument Serif',serif;display:block;margin-bottom:6px}
+.link-card span{font-size:13px;color:#625d54}
+
+/* fonts */
+.fonts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.font-card{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:10px}
+.font-card .tag{font:500 10px 'DM Sans',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--olive)}
+.font-card .sample{min-height:120px;font-size:34px;line-height:1.1}
+.font-card a{font-size:12px;color:var(--olive)}
+.f-serif{font-family:'Instrument Serif',Georgia,serif}
+.f-hand{font-family:'La Belle Aurore',cursive;font-size:40px!important}
+.f-sans{font-family:'DM Sans',Arial,sans-serif;font-weight:500}
+
+footer{margin-top:60px;border-top:1px solid var(--line);padding-top:16px;font:500 11px 'DM Sans',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+
+@media(max-width:760px){
+ .bios,.links,.fonts{grid-template-columns:1fr}
+ .ig-head{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <div class="kicker">Estúdio Flamma · Fábio + Taiguara · 12/11/2026</div>
+  <h1>Curadoria Classic Affair</h1>
+  <p class="sub">Conteúdos para o perfil de teste e o aquecimento da futura marca de Fábio e Taiguara.</p>
+</header>
+
+<nav class="toc">
+  <a href="#bios">1 · Bio</a>
+  <a href="#perfil">2 · Perfil</a>
+  <a href="#links">3 · Curadoria</a>
+  <a href="#tipografia">4 · Tipografia</a>
+</nav>
+
+<section id="bios">
+  <div class="kicker">01 · Bio</div>
+  <h2>Opções de bio</h2>
+  <p class="sub">Escolha uma, copie e cole no perfil. Em "Usar na prévia" ela aparece no card do perfil abaixo.</p>
+  <div class="bios" id="bioList"></div>
+</section>
+
+<section id="perfil">
+  <div class="kicker">02 · Perfil</div>
+  <h2>Como o perfil vai aparecer</h2>
+  <p class="sub">A prévia mostra o feed na ordem definida. Trocar a foto e editar a bio funciona só nesta tela; para guardar, tire print.</p>
+
+  <div class="ig">
+    <div class="ig-head">
+      <div class="avatar-wrap">
+        <img id="avatarImg" class="avatar" src="assets/profile.jpg" alt="Foto de perfil">
+        <label class="upload-label">Trocar foto
+          <input type="file" accept="image/*" id="avatarInput">
+        </label>
+      </div>
+      <div class="ig-meta">
+        <input class="handle" id="handle" value="classic.affair" aria-label="Nome do perfil">
+        <div class="stats"><span><b>0</b> publicações</span><span><b>0</b> seguidores</span><span><b>0</b> seguindo</span></div>
+        <textarea class="bio-edit" id="bioEdit" aria-label="Bio">Tempo de qualidade à mesa, na estrada e no ofício.
+Repertório em construção.</textarea>
+      </div>
+    </div>
+    <div class="ig-grid" id="igGrid"></div>
+  </div>
+</section>
+
+<section id="links">
+  <div class="kicker">03 · Curadoria</div>
+  <h2>Pinterest e Drive</h2>
+  <div class="links">
+    <a class="link-card" href="https://pin.it/6STlezCxM" target="_blank" rel="noopener">
+      <b>Pasta do Pinterest</b>
+      <span>Todas as referências por tema. Pode subir imagens também.</span>
+    </a>
+    <a class="link-card" href="https://drive.google.com/drive/folders/15kyWgIAoLvSHXp4RiQO_XcJjhMQ196ho?usp=sharing" target="_blank" rel="noopener">
+      <b>Drive: vídeos e fotos</b>
+      <span>Material para Reels e posts, sem direitos autorais.</span>
+    </a>
+    <a class="link-card" href="https://open.spotify.com/playlist/75iUlsPcLmVUUjobSyGkG4?si=54d445cab99d467b" target="_blank" rel="noopener">
+      <b>Playlist no Spotify</b>
+      <span>Trilha de referência para os Reels e para o clima da marca.</span>
+    </a>
+  </div>
+</section>
+
+<section id="tipografia">
+  <div class="kicker">04 · Tipografia para Reels</div>
+  <h2>Três fontes sugeridas</h2>
+  <p class="sub">Uma para frase de impacto, uma manuscrita e uma sans para textos longos.</p>
+  <div class="fonts">
+    <div class="font-card">
+      <div class="tag">Serif · impacto</div>
+      <div class="sample f-serif">Tem coisa que só melhora quando a gente para.</div>
+      <a href="https://fonts.google.com/specimen/Instrument+Serif" target="_blank" rel="noopener">Instrument Serif no Google Fonts ↗</a>
+    </div>
+    <div class="font-card">
+      <div class="tag">Manuscrito · destaque</div>
+      <div class="sample f-hand">Um caminho sem pressa.</div>
+      <a href="https://fonts.google.com/specimen/La+Belle+Aurore" target="_blank" rel="noopener">La Belle Aurore no Google Fonts ↗</a>
+    </div>
+    <div class="font-card">
+      <div class="tag">Sans · texto longo</div>
+      <div class="sample f-sans">O dia também merece um intervalo entre uma coisa e outra.</div>
+      <a href="https://fonts.google.com/specimen/DM+Sans" target="_blank" rel="noopener">DM Sans no Google Fonts ↗</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>Fábio + Taiguara · Curadoria para Classic Affair</span>
+  <span>Estúdio Flamma · 12/11/2026</span>
+</footer>
+
+</div>
+
+<script>
+const tiles = Array.from({length:18},(_,i)=>`assets/t${String(i+1).padStart(2,'0')}.jpg`);
+
+const igGrid = document.getElementById('igGrid');
+tiles.forEach(src=>{ const img=document.createElement('img'); img.src=src; img.alt=''; igGrid.appendChild(img); });
+
+// bios (sem a linha de nome: o nome do perfil fica no campo acima)
+const bios = [
+ {tag:'Tempo de qualidade', text:`Tempo bem vivido. Coisas bem feitas.\nDiário visual de quem faz com calma.`},
+ {tag:'Narrativa', text:`Um olhar sobre o tempo que sobra quando a gente para.\nRituais, ofício e estrada. Sem pressa.`},
+ {tag:'Manifesto curto', text:`Mostrar menos, fazer mais.\nTempo, ofício e pausas bem vividas.`},
+ {tag:'Bonvivant', text:`bonvivant\nTempo de qualidade à mesa, na estrada e no ofício.\nRepertório em construção.`}
+];
+const bioList = document.getElementById('bioList');
+const bioEdit = document.getElementById('bioEdit');
+bios.forEach((b,i)=>{
+  const card=document.createElement('div');
+  card.className='bio-card';
+  card.innerHTML=`<div class="tag">Opção ${i+1} · ${b.tag}</div><pre>${b.text}</pre><div class="btn-row"><button class="btn ghost" data-copy="${i}">Copiar</button><button class="btn" data-use="${i}">Usar na prévia</button></div>`;
+  bioList.appendChild(card);
+});
+bioList.addEventListener('click',e=>{
+  const c=e.target.dataset;
+  if(c.copy!==undefined){
+    navigator.clipboard?.writeText(bios[c.copy].text).then(()=>{e.target.textContent='Copiado';setTimeout(()=>e.target.textContent='Copiar',1500)}).catch(()=>{});
+  }
+  if(c.use!==undefined){
+    bioEdit.value=bios[c.use].text;
+    document.querySelectorAll('.bio-card').forEach(x=>x.classList.remove('selected'));
+    e.target.closest('.bio-card').classList.add('selected');
+    document.getElementById('perfil').scrollIntoView({behavior:'smooth'});
+  }
+});
+
+document.getElementById('avatarInput').addEventListener('change',e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=()=>{document.getElementById('avatarImg').src=r.result};
+  r.readAsDataURL(f);
+});
+</script>
+</body>
+</html>
